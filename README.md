@@ -1,4 +1,8 @@
 # @akryum/vue-cli-plugin-ssr
+
+[![npm](https://img.shields.io/npm/v/@akryum%2Fvue-cli-plugin-ssr.svg) ![npm](https://img.shields.io/npm/dm/@akryum%2Fvue-cli-plugin-ssr.svg)](https://www.npmjs.com/package/@akryum%2Fvue-cli-plugin-ssr)
+[![vue-cli3](https://img.shields.io/badge/vue--cli-3.x-brightgreen.svg)](https://github.com/vuejs/vue-cli)
+
 Simple Server-Side-Rendering plugin for Vue CLI (Work-in-Progress)
 
 <p>
