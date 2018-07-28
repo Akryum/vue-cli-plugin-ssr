@@ -132,7 +132,11 @@ module.exports = (api, options, rootOptions) => {
 function getFile (api, file) {
   let filePath = api.resolve(file)
   if (fs.existsSync(filePath)) return filePath
+  filePath = api.resolve(file.replace('.js', '.ts'))
+  if (fs.existsSync(filePath)) return filePath
   filePath = api.resolve(file.replace('.js', ''), 'index.js')
+  if (fs.existsSync(filePath)) return filePath
+  filePath = api.resolve(file.replace('.js', ''), 'index.ts')
   if (fs.existsSync(filePath)) return filePath
 
   api.exitLog(`File ${file} not found in the project. Automatic generation will be incomplete.`, 'warn')
