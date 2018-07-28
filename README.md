@@ -17,6 +17,11 @@ Simple Server-Side-Rendering plugin for Vue CLI (Work-in-Progress)
 - Async routes
 - [vue-cli-plugin-apollo](https://github.com/Akryum/vue-cli-plugin-apollo) support
 
+**:rocket: Roadmap:**
+
+- Automatic conversion of vuex modules to `state () {}`
+- Integration with CLI UI
+
 ## Usage
 
 ```bash
