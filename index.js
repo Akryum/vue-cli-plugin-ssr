@@ -20,7 +20,7 @@ module.exports = (api, options) => {
   }, async (args) => {
     const options = service.projectOptions
 
-    rimraf.sync(path.resolve(__dirname, './dist'))
+    rimraf.sync(api.resolve(config.distPath))
 
     const clientConfig = getWebpackConfig({ service, target: 'client' })
     const serverConfig = getWebpackConfig({ service, target: 'server' })
