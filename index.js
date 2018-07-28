@@ -68,3 +68,5 @@ module.exports.defaultModes = {
   'ssr:build': 'production',
   'ssr:server': 'development',
 }
+
+module.exports.ssrMiddleware = require('./lib/app')

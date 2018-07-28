@@ -78,6 +78,7 @@ module.exports = (api, options, rootOptions) => {
 
           return result
         }`)
+        contents = contents.replace('createProvider().provide()', 'apolloProvider.provide()')
         fs.writeFileSync(file, contents, { encoding: 'utf8' })
       }
     }
@@ -108,6 +109,27 @@ module.exports = (api, options, rootOptions) => {
           return {$1}
         },
         $3:`)
+        fs.writeFileSync(file, contents, { encoding: 'utf8' })
+      }
+    }
+
+    // Apollo
+    if (api.hasPlugin('apollo')) {
+      if (fs.existsSync(api.resolve('./apollo-server'))) {
+        const file = getFile(api, './apollo-server/server.js')
+        let contents
+        if (file) {
+          contents = fs.readFileSync(file, { encoding: 'utf8' })
+        } else {
+          contents = `export default app => {
+            
+          }`
+        }
+
+        contents = contents.replace(/export default app => {((.|\s)*)}/, `export default app => {$1
+          ssrMiddleware(app)
+        }`)
+        contents = `import { ssrMiddleware } from '@akryum/vue-cli-plugin-ssr'\n` + contents
         fs.writeFileSync(file, contents, { encoding: 'utf8' })
       }
     }
