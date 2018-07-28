@@ -1,4 +1,4 @@
-# vue-cli-plugin-ssr
+# @akryum/vue-cli-plugin-ssr
 Simple Server-Side-Rendering plugin for Vue CLI (Work-in-Progress)
 
 <p>
