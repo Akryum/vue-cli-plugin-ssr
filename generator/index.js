@@ -44,9 +44,9 @@ module.exports = (api, options, rootOptions) => {
       const file = getFile(api, './src/main.js')
       if (file) {
         let contents = fs.readFileSync(file, { encoding: 'utf8' })
-        contents = contents.replace(`import router from './router'`, `import { createRouter } from './router'`)
-        contents = contents.replace(`import store from './store'`, `import { createStore } from './store'`)
-        contents = contents.replace(`import './registerServiceWorker'\n`, ``)
+        contents = contents.replace(/import router from ('|")\.\/router(\.\w+)?('|")/, `import { createRouter } from $1./router$3`)
+        contents = contents.replace(/import store from ('|")\.\/store(\.\w+)?('|")/, `import { createStore } from $1./store$3`)
+        contents = contents.replace(/import ('|")\.\/registerServiceWorker('|")\n/, ``)
         contents = contents.replace(/const apolloProvider = createProvider\(({(.|\s)*?})?\)\n/, ``)
         contents = contents.replace(/new Vue\({((.|\s)*)}\)\.\$mount\(.*?\)/, `export async function createApp ({
           context,
