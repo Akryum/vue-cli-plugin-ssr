@@ -1,4 +1,3 @@
-const path = require('path')
 const webpack = require('webpack')
 const formatStats = require('@vue/cli-service/lib/commands/build/formatStats')
 const rimraf = require('rimraf')
