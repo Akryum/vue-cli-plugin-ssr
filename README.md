@@ -1,6 +1,14 @@
 # vue-cli-plugin-ssr
 Simple Server-Side-Rendering plugin for Vue CLI (Work-in-Progress)
 
+<p>
+  <a href="https://www.patreon.com/akryum" target="_blank">
+    <img src="https://c5.patreon.com/external/logo/become_a_patron_button.png" alt="Become a Patreon">
+  </a>
+</p>
+
+<br>
+
 **:star: Features:**
 
 - Automatic conversion of your project to SSR
