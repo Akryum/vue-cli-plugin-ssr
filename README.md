@@ -1,7 +1,7 @@
 # vue-cli-plugin-ssr
-Simple SSR plugin for Vue CLI (Work-in-Progress)
+Simple Server-Side-Rendering plugin for Vue CLI (Work-in-Progress)
 
-**Features:**
+**:star: Features:**
 
 - Automatic conversion of your project to SSR
 - Integrated express server
@@ -13,7 +13,6 @@ Simple SSR plugin for Vue CLI (Work-in-Progress)
 
 ```bash
 vue add @akryum/ssr
-
 yarn run ssr:serve
 ```
 
