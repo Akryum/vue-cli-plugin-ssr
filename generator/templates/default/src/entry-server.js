@@ -4,7 +4,7 @@ import 'isomorphic-fetch'
 import { createApp } from './main'
 
 export default context => {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     const {
       app,
       router,
@@ -14,7 +14,7 @@ export default context => {
 <%_ if (apollo) { _%>
       apolloProvider
 <%_ } _%>
-    } = createApp()
+    } = await createApp()
 
     router.push(context.url)
 
