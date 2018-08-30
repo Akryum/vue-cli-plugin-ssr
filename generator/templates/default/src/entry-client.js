@@ -9,8 +9,7 @@ createApp({
   async beforeApp ({
     router
   }) {
-    const components = await loadAsyncComponents({ router })
-    console.log(components)
+    await loadAsyncComponents({ router })
   },
 
   afterApp ({

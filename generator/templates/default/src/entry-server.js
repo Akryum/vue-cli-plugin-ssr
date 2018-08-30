@@ -1,8 +1,15 @@
 <%_ if (apollo) { _%>
 import 'isomorphic-fetch'
+import Vue from 'vue'
+import App from './App.vue'
+import ApolloSSR from 'vue-apollo/ssr'
 <%_ } _%>
 import { createApp } from './main'
 
+<%_ if (apollo) { _%>
+Vue.use(ApolloSSR)
+
+<%_ } _%>
 export default context => {
   return new Promise(async (resolve, reject) => {
     const {
@@ -21,11 +28,6 @@ export default context => {
     router.onReady(() => {
       const matchedComponents = router.getMatchedComponents()
 
-      if (!matchedComponents.length) {
-        // eslint-disable-next-line prefer-promise-reject-errors
-        return reject({ code: 404 })
-      }
-
       Promise.all([
 <%_ if (vuex) { _%>
         // Async data
@@ -40,9 +42,12 @@ export default context => {
 <%_ } _%>
 <%_ if (apollo) { _%>
         // Apollo prefetch
-        apolloProvider.prefetchAll({
+        ApolloSSR.prefetchAll(apolloProvider, [App, ...matchedComponents], {
+<%_ if (vuex) { _%>
+          store,
+<%_ } _%>
           route: router.currentRoute,
-        }, matchedComponents),
+        }),
 <%_ } _%>
       ]).then(() => {
 <%_ if (vuex) { _%>
@@ -55,12 +60,11 @@ export default context => {
 <%_ } _%>
 
 <%_ if (apollo) { _%>
-        // Apollo
-        context.apolloState = apolloProvider.getStates()
+        // Same for Apollo client cache
+        context.apolloState = ApolloSSR.getStates(apolloProvider)
 <%_ } _%>
+        resolve(app)
       })
-
-      resolve(app)
     }, reject)
   })
 }

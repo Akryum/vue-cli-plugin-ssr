@@ -5,8 +5,7 @@ const {
 const chalk = require('chalk')
 
 module.exports = (api, options, rootOptions) => {
-  // TODO cleanup for next cli release
-  if (!api.hasPlugin('router') && !api.generator.pkg.dependencies['vue-router']) {
+  if (!api.hasPlugin('router')) {
     throw new Error(`Please install router plugin with 'vue add router'.`)
   }
 
@@ -30,8 +29,7 @@ module.exports = (api, options, rootOptions) => {
   }
 
   const templateOptions = {
-    // TODO cleanup for next cli release
-    vuex: api.hasPlugin('vuex') || api.generator.pkg.dependencies['vuex'],
+    vuex: api.hasPlugin('vuex'),
     pwa: api.hasPlugin('pwa'),
     apollo: api.hasPlugin('apollo'),
   }
@@ -78,7 +76,7 @@ module.exports = (api, options, rootOptions) => {
 
           return result
         }`)
-        contents = contents.replace('createProvider().provide()', 'apolloProvider.provide()')
+        contents = contents.replace('apolloProvider: createProvider()', 'apolloProvider')
         fs.writeFileSync(file, contents, { encoding: 'utf8' })
       }
     }
@@ -127,7 +125,7 @@ module.exports = (api, options, rootOptions) => {
         }
 
         contents = contents.replace(/export default app => {((.|\s)*)}/, `export default app => {$1
-          ssrMiddleware(app)
+          ssrMiddleware(app, { prodOnly: true })
         }`)
         contents = `import { ssrMiddleware } from '@akryum/vue-cli-plugin-ssr'\n` + contents
         fs.writeFileSync(file, contents, { encoding: 'utf8' })
@@ -139,7 +137,11 @@ module.exports = (api, options, rootOptions) => {
       // Lint generated/modified files
       try {
         const lint = require('@vue/cli-plugin-eslint/lint')
-        lint({ silent: true }, api)
+        const files = ['*.js', '.*.js', 'src']
+        if (api.hasPlugin('apollo')) {
+          files.push('apollo-server')
+        }
+        lint({ silent: true, _: files }, api)
       } catch (e) {
         // No ESLint vue-cli plugin
       }

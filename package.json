@@ -27,7 +27,6 @@
   "main": "index.js",
   "dependencies": {
     "chalk": "^2.4.1",
-    "chokidar": "^2.0.4",
     "clipboardy": "^1.2.3",
     "compression": "^1.7.3",
     "cross-env": "^5.2.0",
