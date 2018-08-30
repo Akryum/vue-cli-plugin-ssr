@@ -14,6 +14,11 @@ module.exports = (api, options) => {
   config.api = api
   const service = config.service = api.service
 
+  api.chainWebpack(webpackConfig => {
+    // Default entry
+    webpackConfig.entry('app').clear().add(config.entry('client'))
+  })
+
   api.registerCommand('ssr:build', {
     description: 'build for production (SSR)',
   }, async (args) => {
