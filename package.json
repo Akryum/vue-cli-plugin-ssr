@@ -1,6 +1,6 @@
 {
   "name": "@akryum/vue-cli-plugin-ssr",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "author": "Guillaume Chau",
   "license": "MIT",
   "scripts": {
