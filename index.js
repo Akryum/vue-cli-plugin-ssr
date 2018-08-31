@@ -33,11 +33,28 @@ module.exports = (api, options) => {
     const onCompilationComplete = (err, stats) => {
       if (err) {
         // eslint-disable-next-line
-        console.error(err);
+        console.error(err.stack || err)
+        if (err.details) {
+          // eslint-disable-next-line
+          console.error(err.details)
+        }
         return
       }
-      // eslint-disable-next-line
-      console.log(formatStats(stats, options.outputDir, api));
+
+      if (stats.hasErrors()) {
+        stats.toJson().errors.forEach(err => console.error(err))
+        process.exitCode = 1
+      }
+
+      if (stats.hasWarnings()) {
+        stats.toJson().warnings.forEach(warn => console.warn(warn))
+      }
+
+      try {
+        // eslint-disable-next-line
+        console.log(formatStats(stats, options.outputDir, api));
+      } catch (e) {
+      }
     }
 
     if (args.watch) {
