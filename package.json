@@ -43,7 +43,6 @@
     "serve-favicon": "^2.5.0",
     "webpack-dev-middleware": "^3.2.0",
     "webpack-hot-middleware": "^2.22.3",
-    "webpack-merge": "^4.1.4",
     "webpack-node-externals": "^1.7.2",
     "webpackbar": "^2.6.3"
   },
