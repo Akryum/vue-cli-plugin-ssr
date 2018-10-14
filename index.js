@@ -1,9 +1,3 @@
-const webpack = require('webpack')
-const formatStats = require('@vue/cli-service/lib/commands/build/formatStats')
-const rimraf = require('rimraf')
-
-const { getWebpackConfig } = require('./lib/webpack')
-const { createServer } = require('./lib/server')
 const config = require('./lib/config')
 const defaultConfig = require('./lib/default-config')
 
@@ -22,10 +16,15 @@ module.exports = (api, options) => {
   api.registerCommand('ssr:build', {
     description: 'build for production (SSR)',
   }, async (args) => {
+    const webpack = require('webpack')
+    const rimraf = require('rimraf')
+    const formatStats = require('@vue/cli-service/lib/commands/build/formatStats')
+
     const options = service.projectOptions
 
     rimraf.sync(api.resolve(config.distPath))
 
+    const { getWebpackConfig } = require('./lib/webpack')
     const clientConfig = getWebpackConfig({ service, target: 'client' })
     const serverConfig = getWebpackConfig({ service, target: 'server' })
 
@@ -72,6 +71,8 @@ module.exports = (api, options) => {
       '-h, --host [host]': 'specify host',
     },
   }, async (args) => {
+    const { createServer } = require('./lib/server')
+
     let port = args.port || config.port || process.env.PORT
     if (!port) {
       const portfinder = require('portfinder')
@@ -94,4 +95,3 @@ module.exports.defaultModes = {
   'ssr:build': 'production',
   'ssr:server': 'development',
 }
-
