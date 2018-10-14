@@ -68,7 +68,8 @@ module.exports = (api, options) => {
     description: 'Run the included server.',
     usage: 'vue-cli-service serve:ssr [options]',
     options: {
-      '--port [port]': 'specify port',
+      '-p, --port [port]': 'specify port',
+      '-h, --host [host]': 'specify host',
     },
   }, async (args) => {
     let port = args.port || config.port || process.env.PORT
@@ -77,10 +78,14 @@ module.exports = (api, options) => {
       port = await portfinder.getPortPromise()
     }
 
+    const host = args.host || config.host || process.env.HOST || 'localhost'
+
     config.port = port
+    config.host = host
 
     await createServer({
       port,
+      host,
     })
   })
 }
