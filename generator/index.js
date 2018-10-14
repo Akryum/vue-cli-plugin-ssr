@@ -47,7 +47,6 @@ module.exports = (api, options, rootOptions) => {
         contents = contents.replace(/import ('|")\.\/registerServiceWorker('|")\n/, ``)
         contents = contents.replace(/const apolloProvider = createProvider\(({(.|\s)*?})?\)\n/, ``)
         contents = contents.replace(/new Vue\({((.|\s)*)}\)\.\$mount\(.*?\)/, `export async function createApp ({
-          context,
           beforeApp = () => {},
           afterApp = () => {}
         } = {}) {

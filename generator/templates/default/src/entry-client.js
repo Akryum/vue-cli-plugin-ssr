@@ -14,7 +14,6 @@ createApp({
 
   afterApp ({
     app,
-    router,
     <%_ if (vuex) { _%>
       store,
     <%_ } _%>
