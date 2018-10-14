@@ -130,6 +130,14 @@ module.exports = (api, options, rootOptions) => {
         contents = `import { ssrMiddleware } from '@akryum/vue-cli-plugin-ssr'\n` + contents
         fs.writeFileSync(file, contents, { encoding: 'utf8' })
       }
+
+      // Replace default apollo dev script
+      setTimeout(() => {
+        const file = api.resolve('./package.json')
+        let contents = fs.readFileSync(file, { encoding: 'utf8' })
+        contents = contents.replace(/(\s*--run \\?("|')vue-cli-service) serve(\\?("|'))/g, '$1 ssr:serve$3')
+        fs.writeFileSync(file, contents, { encoding: 'utf8' })
+      })
     }
 
     // Linting
