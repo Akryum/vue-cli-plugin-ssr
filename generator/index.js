@@ -141,6 +141,17 @@ module.exports = (api, options, rootOptions) => {
 
     // Linting
     if (api.hasPlugin('eslint')) {
+      // Generate JSON schema
+      const execa = require('execa')
+      execa.sync('vue-cli-service apollo:schema:generate', [
+        '--output',
+        api.resolve('./node_modules/.temp/graphql/schema'),
+      ], {
+        stdio: ['inherit', 'inherit', 'inherit'],
+        cleanup: true,
+        shell: true,
+      })
+
       // Lint generated/modified files
       try {
         const lint = require('@vue/cli-plugin-eslint/lint')
