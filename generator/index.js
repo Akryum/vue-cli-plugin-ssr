@@ -140,29 +140,38 @@ module.exports = (api, options, rootOptions) => {
     }
 
     // Linting
-    if (api.hasPlugin('eslint')) {
+    const execa = require('execa')
+
+    if (api.hasPlugin('apollo')) {
       // Generate JSON schema
-      const execa = require('execa')
-      execa.sync('vue-cli-service apollo:schema:generate', [
-        '--output',
-        api.resolve('./node_modules/.temp/graphql/schema'),
+      try {
+        execa.sync('vue-cli-service apollo:schema:generate', [
+          '--output',
+          api.resolve('./node_modules/.temp/graphql/schema'),
+        ], {
+          stdio: ['inherit', 'inherit', 'inherit'],
+          cleanup: true,
+          shell: true,
+        })
+      } catch (e) {}
+    }
+
+    // Lint generated/modified files
+    try {
+      const files = ['*.js', '.*.js', 'src']
+      if (api.hasPlugin('apollo')) {
+        files.push('apollo-server')
+      }
+      execa.sync('vue-cli-service', [
+        'lint',
+        ...files,
       ], {
         stdio: ['inherit', 'inherit', 'inherit'],
         cleanup: true,
         shell: true,
       })
-
-      // Lint generated/modified files
-      try {
-        const lint = require('@vue/cli-plugin-eslint/lint')
-        const files = ['*.js', '.*.js', 'src']
-        if (api.hasPlugin('apollo')) {
-          files.push('apollo-server')
-        }
-        lint({ silent: true, _: files }, api)
-      } catch (e) {
-        // No ESLint vue-cli plugin
-      }
+    } catch (e) {
+      // No ESLint vue-cli plugin
     }
 
     api.exitLog(`Start dev server with ${chalk.cyan(`${hasYarn() ? 'yarn' : 'npm'} run ssr:serve`)}`, 'info')
