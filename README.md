@@ -1,6 +1,6 @@
 
 <p align="center">
-  <img src="./logo.png">
+  <img src="./docs/.vuepress/public/logo.png">
 </p>
 
 # @akryum/vue-cli-plugin-ssr
