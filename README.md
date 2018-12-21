@@ -34,6 +34,8 @@ Simple Server-Side-Rendering plugin for Vue CLI (Work-in-Progress)
 
 <br>
 
+## About
+
 **:star: Features:**
 
 - Automatic conversion of your project to SSR
