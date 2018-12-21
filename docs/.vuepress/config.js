@@ -15,6 +15,9 @@ module.exports = {
     repo: 'Akryum/vue-cli-plugin-ssr',
     docsDir: 'docs',
     editLinks: true,
+    serviceWorker: {
+      updatePopup: true,
+    },
     locales: {
       '/': {
         selectText: 'Languages',
