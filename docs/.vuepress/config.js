@@ -12,7 +12,7 @@ module.exports = {
     },
   },
   themeConfig: {
-    repo: 'Akryum/vue-apollo',
+    repo: 'Akryum/vue-cli-plugin-ssr',
     docsDir: 'docs',
     editLinks: true,
     locales: {
