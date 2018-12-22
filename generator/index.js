@@ -47,7 +47,6 @@ module.exports = (api, options, rootOptions) => {
         contents = contents.replace(/import ('|")\.\/registerServiceWorker('|")\n/, ``)
         contents = contents.replace(/const apolloProvider = createProvider\(({(.|\s)*?})?\)\n/, ``)
         contents = contents.replace(/new Vue\({((.|\s)*)}\)\.\$mount\(.*?\)/, `export async function createApp ({
-          context,
           beforeApp = () => {},
           afterApp = () => {}
         } = {}) {
@@ -127,9 +126,17 @@ module.exports = (api, options, rootOptions) => {
         contents = contents.replace(/export default app => {((.|\s)*)}/, `export default app => {$1
           ssrMiddleware(app, { prodOnly: true })
         }`)
-        contents = `import { ssrMiddleware } from '@akryum/vue-cli-plugin-ssr'\n` + contents
+        contents = `import ssrMiddleware from '@akryum/vue-cli-plugin-ssr/lib/app'\n` + contents
         fs.writeFileSync(file, contents, { encoding: 'utf8' })
       }
+
+      // Replace default apollo dev script
+      setTimeout(() => {
+        const file = api.resolve('./package.json')
+        let contents = fs.readFileSync(file, { encoding: 'utf8' })
+        contents = contents.replace(/(\s*--run \\?("|')vue-cli-service) serve(\\?("|'))/g, '$1 ssr:serve$3')
+        fs.writeFileSync(file, contents, { encoding: 'utf8' })
+      })
     }
 
     // Linting
