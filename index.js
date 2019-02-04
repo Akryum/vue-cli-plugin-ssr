@@ -10,7 +10,12 @@ module.exports = (api, options) => {
 
   api.chainWebpack(webpackConfig => {
     // Default entry
-    webpackConfig.entry('app').clear().add(config.entry('client'))
+    if (!process.env.VUE_CLI_SSR_TARGET) {
+      webpackConfig.entry('app').clear().add(config.entry('client'))
+    } else {
+      const { chainWebpack } = require('./lib/webpack')
+      chainWebpack(webpackConfig)
+    }
   })
 
   api.registerCommand('ssr:build', {
@@ -24,9 +29,8 @@ module.exports = (api, options) => {
 
     rimraf.sync(api.resolve(config.distPath))
 
-    const { getWebpackConfig } = require('./lib/webpack')
-    const clientConfig = getWebpackConfig({ service, target: 'client' })
-    const serverConfig = getWebpackConfig({ service, target: 'server' })
+    const { getWebpackConfigs } = require('./lib/webpack')
+    const [clientConfig, serverConfig] = getWebpackConfigs(service)
 
     const compiler = webpack([clientConfig, serverConfig])
     const onCompilationComplete = (err, stats) => {
