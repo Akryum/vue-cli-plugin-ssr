@@ -16,7 +16,7 @@ module.exports = (api, options, rootOptions) => {
       'ssr:start': 'cross-env NODE_ENV=production vue-cli-service ssr:serve --mode production',
     },
     dependencies: {
-      'vue-server-renderer': '^2.5.16',
+      'vue-server-renderer': '^2.6.0',
     },
   })
 
