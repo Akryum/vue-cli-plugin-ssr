@@ -23,7 +23,7 @@ module.exports = {
       // See https://ssr.vuejs.org/guide/build-config.html#externals-caveats
       nodeExternalsWhitelist: [/\.css$/, /\?vue&type=style/],
       // Function to extend app context object
-      extendContext: (req, res, process) => ({ appMode: process.env.appMode }),
+      extendContext: (req, res, process) => ({ appMode: process.env.APP_MODE }),
       // Function to connect custom middlewares
       extendServer: app => {
         const cookieParser = require('cookie-parser')
