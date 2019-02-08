@@ -22,6 +22,8 @@ module.exports = {
       skipRequests: req => req.originalUrl === '/graphql',
       // See https://ssr.vuejs.org/guide/build-config.html#externals-caveats
       nodeExternalsWhitelist: [/\.css$/, /\?vue&type=style/],
+      // Function to extend app context object
+      extendContext: (req, res, process) => ({ appMode: process.env.appMode }),
       // Function to connect custom middlewares
       extendServer: app => {
         const cookieParser = require('cookie-parser')
@@ -29,7 +31,7 @@ module.exports = {
       },
       // Paths
       distPath: path.resolve(__dirname, './dist'),
-      error500Html: null,
+      error500Html: path.resolve(__dirname, './dist/500.html'),
       templatePath: path.resolve(__dirname, './dist/index.html'),
       serviceWorkerPath: path.resolve(__dirname, './dist/service-worker.js'),
       // Directives fallback
