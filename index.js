@@ -97,5 +97,5 @@ module.exports = (api, options) => {
 
 module.exports.defaultModes = {
   'ssr:build': 'production',
-  'ssr:server': 'development',
+  'ssr:serve': 'development',
 }
