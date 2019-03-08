@@ -27,6 +27,10 @@ module.exports = {
         const cookieParser = require('cookie-parser')
         app.use(cookieParser())
       },
+      // Function to call after rendering has been completed
+      rendered: (res, context) => {
+        res.setHeader(`Cache-Control', 'public, max-age=${context.maxAge}`)
+      }
       // Paths
       distPath: path.resolve(__dirname, './dist'),
       error500Html: null,
