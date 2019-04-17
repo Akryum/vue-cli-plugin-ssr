@@ -17,7 +17,7 @@ export default context => {
 <%_ } _%>
     } = await createApp()
 
-    router.push(context.url)
+    router.push(prepareUrlForRouting(context.url))
 
     router.onReady(() => {
       context.rendered = () => {
@@ -38,4 +38,11 @@ export default context => {
       resolve(app)
     }, reject)
   })
+}
+
+function prepareUrlForRouting(url) {
+  if (url.startsWith(process.env.BASE_URL)) {
+    return url.substr(process.env.BASE_URL.length);
+  }
+  return url;
 }
