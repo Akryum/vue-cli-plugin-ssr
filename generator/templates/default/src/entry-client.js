@@ -1,3 +1,6 @@
+<%_ if (apollo) { _%>
+import 'isomorphic-fetch'
+<%_ } _%>
 import { loadAsyncComponents } from '@akryum/vue-cli-plugin-ssr/client'
 <%_ if (pwa) { _%>
 import './registerServiceWorker'
