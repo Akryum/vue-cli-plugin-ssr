@@ -4,6 +4,13 @@ import ApolloSSR from 'vue-apollo/ssr'
 <%_ } _%>
 import { createApp } from './main'
 
+const prepareUrlForRouting = url => {
+  const { BASE_URL } = process.env
+  return url.startsWith(BASE_URL.replace(/\/$/, ''))
+    ? url.substr(BASE_URL.length)
+    : url
+}
+
 export default context => {
   return new Promise(async (resolve, reject) => {
     const {
@@ -38,11 +45,4 @@ export default context => {
       resolve(app)
     }, reject)
   })
-}
-
-function prepareUrlForRouting(url) {
-  if (url.startsWith(process.env.BASE_URL)) {
-    return url.substr(process.env.BASE_URL.length);
-  }
-  return url;
 }
