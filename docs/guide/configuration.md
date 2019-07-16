@@ -36,6 +36,9 @@ module.exports = {
       directives: {
         // See 'Directive' chapter
       }
+      lruCacheOptions: {
+        // See https://ssr.vuejs.org/guide/caching.html
+      },
     }
   }
 }
