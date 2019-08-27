@@ -3,6 +3,9 @@
   "version": "0.5.0",
   "description": "Turn your app into an isomorphic SSR app!",
   "author": "Guillaume Chau",
+  "contributors": [
+    "sum.cumo GmbH"
+  ],
   "license": "MIT",
   "scripts": {
     "prepublishOnly": "yarn run test",
@@ -13,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Akryum/vue-cli-plugin-ssr.git"
+    "url": "git+https://github.com/sumcumo/vue-cli-plugin-ssr.git"
   },
   "publishConfig": {
     "access": "public"
@@ -23,9 +26,9 @@
     "vue-cli",
     "ssr"
   ],
-  "homepage": "https://github.com/Akryum/vue-cli-plugin-ssr",
+  "homepage": "https://github.com/sumcumo/vue-cli-plugin-ssr",
   "bugs": {
-    "url": "https://github.com/Akryum/vue-cli-plugin-ssr/issues"
+    "url": "https://github.com/sumcumo/vue-cli-plugin-ssr/issues"
   },
   "main": "index.js",
   "dependencies": {
