@@ -1,7 +1,7 @@
 {
-  "name": "@akryum/vue-cli-plugin-ssr",
-  "version": "0.5.0",
-  "description": "Turn your app into an isomorphic SSR app!",
+  "name": "@sum.cumo/vue-cli-plugin-ssr",
+  "version": "0.6.0",
+  "description": "Turn your app into an isomorphic SSR app! Forked from https://github.com/Akryum/vue-cli-plugin-ssr",
   "author": "Guillaume Chau",
   "contributors": [
     "sum.cumo GmbH"
