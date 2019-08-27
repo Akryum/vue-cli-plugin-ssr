@@ -1,48 +1,34 @@
 module.exports = {
+  dest: 'docs/.vuepress/dist',
   base: '/',
-  serviceWorker: true,
+  title: 'Vue CLI SSR plugin',
+  description: 'Dead Simple Server-Side-Rendering',
   head: [
-    ['link', { rel: 'icon', href: '/logo.png' }],
+    ['link', { rel: 'icon', href: '/favicon.png' }]
   ],
-  locales: {
-    '/': {
-      lang: 'en-US',
-      title: 'Vue CLI SSR plugin',
-      description: 'Dead Simple Server-Side-Rendering',
-    },
-  },
+  evergreen: true,
+  displayAllHeaders: true,
+  sidebarDepth: 3,
   themeConfig: {
-    repo: 'Akryum/vue-cli-plugin-ssr',
-    docsDir: 'docs',
-    editLinks: true,
-    serviceWorker: {
-      updatePopup: true,
+    sidebar: {
+      '/guide/': [
+        '',
+        'configuration',
+        'directives',
+        'webpack',
+      ],
     },
-    locales: {
-      '/': {
-        selectText: 'Languages',
-        label: 'English',
-        lastUpdated: 'Last Updated',
-        nav: [
-          {
-            text: 'Guide',
-            link: '/guide/',
-          },
-          {
-            text: 'Patreon',
-            link: 'https://www.patreon.com/akryum',
-          },
-        ],
-        sidebarDepth: 3,
-        sidebar: {
-          '/guide/': [
-            '',
-            'configuration',
-            'directives',
-            'webpack',
-          ],
-        },
+    nav: [
+      {
+        text: 'Guide',
+        link: '/guide/',
       },
-    },
+      {
+        text: 'Patreon',
+        link: 'https://www.patreon.com/akryum',
+      },
+    ],
   },
+  host: '127.0.0.1',
 }
+
