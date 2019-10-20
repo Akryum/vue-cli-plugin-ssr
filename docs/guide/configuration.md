@@ -48,6 +48,8 @@ module.exports = {
         const cookieParser = require('cookie-parser')
         app.use(cookieParser())
       },
+      // Copy URL to system clipboard on start
+      copyUrlOnStart: true,
       // Function to call after rendering has been completed
       onRender: (res, context) => {
         res.setHeader(`Cache-Control', 'public, max-age=${context.maxAge}`)
