@@ -31,6 +31,8 @@ module.exports = {
       lruCacheOptions: {
         // See https://ssr.vuejs.org/guide/caching.html
       },
+      // apply default middleware like compression, serving static files
+      applyDefaultServer: true,
       // Function to connect custom middlewares
       extendServer: app => {
         const cookieParser = require('cookie-parser')
