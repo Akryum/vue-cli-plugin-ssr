@@ -24,23 +24,26 @@ module.exports = {
       nodeExternalsWhitelist: [/\.css$/, /\?vue&type=style/],
       // Static files Cache-Control maxAge value
       staticCacheTtl: 1000 * 60 * 60 * 24 * 30,
+      // Directives fallback
+      directives: {
+        // See 'Directive' chapter
+      },
+      lruCacheOptions: {
+        // See https://ssr.vuejs.org/guide/caching.html
+      },
       // Function to connect custom middlewares
       extendServer: app => {
         const cookieParser = require('cookie-parser')
         app.use(cookieParser())
+      },
+      onError: error => {
+        // Send to error monitoring service
       },
       // Paths
       distPath: path.resolve(__dirname, './dist'),
       error500Html: null,
       templatePath: path.resolve(__dirname, './dist/index.html'),
       serviceWorkerPath: path.resolve(__dirname, './dist/service-worker.js'),
-      // Directives fallback
-      directives: {
-        // See 'Directive' chapter
-      }
-      lruCacheOptions: {
-        // See https://ssr.vuejs.org/guide/caching.html
-      },
     }
   }
 }
