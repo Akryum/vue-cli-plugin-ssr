@@ -12,6 +12,10 @@ module.exports = {
       port: null,
       // Listening host for `serve` command
       host: null,
+      // Specify public file paths to disable resource prefetch hints for
+      shouldNotPrefetch: [],
+      // Specify public file paths to disable resource preload hints for
+      shouldNotPreload: [],
       // Entry for each target
       entry: target => `./src/entry-${target}`,
       // Default title
