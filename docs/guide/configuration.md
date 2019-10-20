@@ -22,6 +22,8 @@ module.exports = {
       skipRequests: req => req.originalUrl === '/graphql',
       // See https://ssr.vuejs.org/guide/build-config.html#externals-caveats
       nodeExternalsWhitelist: [/\.css$/, /\?vue&type=style/],
+      // Static files Cache-Control maxAge value
+      staticCacheTtl: 1000 * 60 * 60 * 24 * 30,
       // Function to connect custom middlewares
       extendServer: app => {
         const cookieParser = require('cookie-parser')
