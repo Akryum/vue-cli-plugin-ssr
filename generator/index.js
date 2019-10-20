@@ -146,15 +146,16 @@ module.exports = (api, options, rootOptions) => {
     if (api.hasPlugin('apollo')) {
       // Generate JSON schema
       try {
-        execa.sync('vue-cli-service apollo:schema:generate', [
+        execa.sync('vue-cli-service', [
+          'apollo:schema:generate',
           '--output',
           api.resolve('./node_modules/.temp/graphql/schema'),
         ], {
-          stdio: ['inherit', 'inherit', 'inherit'],
-          cleanup: true,
           preferLocal: true,
         })
-      } catch (e) {}
+      } catch (e) {
+        console.error(e)
+      }
     }
 
     // Lint generated/modified files
@@ -167,8 +168,6 @@ module.exports = (api, options, rootOptions) => {
         'lint',
         ...files,
       ], {
-        stdio: ['inherit', 'inherit', 'inherit'],
-        cleanup: true,
         preferLocal: true,
       })
     } catch (e) {
