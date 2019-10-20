@@ -140,7 +140,6 @@ module.exports = (api, options, rootOptions) => {
       })
     }
 
-    // Linting
     const execa = require('execa')
 
     if (api.hasPlugin('apollo')) {
@@ -150,29 +149,9 @@ module.exports = (api, options, rootOptions) => {
           '--output',
           api.resolve('./node_modules/.temp/graphql/schema'),
         ], {
-          stdio: ['inherit', 'inherit', 'inherit'],
-          cleanup: true,
-          shell: true,
+          preferLocal: true,
         })
       } catch (e) {}
-    }
-
-    // Lint generated/modified files
-    try {
-      const files = ['*.js', '.*.js', 'src']
-      if (api.hasPlugin('apollo')) {
-        files.push('apollo-server')
-      }
-      execa.sync('vue-cli-service', [
-        'lint',
-        ...files,
-      ], {
-        stdio: ['inherit', 'inherit', 'inherit'],
-        cleanup: true,
-        shell: true,
-      })
-    } catch (e) {
-      // No ESLint vue-cli plugin
     }
 
     api.exitLog(`Start dev server with ${chalk.cyan(`${hasYarn() ? 'yarn' : 'npm'} run ssr:serve`)}`, 'info')
