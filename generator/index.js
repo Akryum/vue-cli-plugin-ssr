@@ -1,4 +1,5 @@
 const fs = require('fs-extra')
+const path = require('path')
 const {
   hasYarn,
 } = require('@vue/cli-shared-utils')
@@ -165,9 +166,9 @@ function getFile (api, file) {
   if (fs.existsSync(filePath)) return filePath
   filePath = api.resolve(file.replace('.js', '.ts'))
   if (fs.existsSync(filePath)) return filePath
-  filePath = api.resolve(file.replace('.js', ''), 'index.js')
+  filePath = api.resolve(path.join(file.replace('.js', ''), 'index.js'))
   if (fs.existsSync(filePath)) return filePath
-  filePath = api.resolve(file.replace('.js', ''), 'index.ts')
+  filePath = api.resolve(path.join(file.replace('.js', ''), 'index.ts'))
   if (fs.existsSync(filePath)) return filePath
 
   api.exitLog(`File ${file} not found in the project. Automatic generation will be incomplete.`, 'warn')
