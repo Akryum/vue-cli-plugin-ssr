@@ -1,15 +1,16 @@
 <%_ if (apollo) { _%>
 import 'isomorphic-fetch'
-import Vue from 'vue'
-import App from './App.vue'
 import ApolloSSR from 'vue-apollo/ssr'
 <%_ } _%>
 import { createApp } from './main'
 
-<%_ if (apollo) { _%>
-Vue.use(ApolloSSR)
+const prepareUrlForRouting = url => {
+  const { BASE_URL } = process.env
+  return url.startsWith(BASE_URL.replace(/\/$/, ''))
+    ? url.substr(BASE_URL.length)
+    : url
+}
 
-<%_ } _%>
 export default context => {
   return new Promise(async (resolve, reject) => {
     const {
@@ -23,33 +24,10 @@ export default context => {
 <%_ } _%>
     } = await createApp()
 
-    router.push(context.url)
+    router.push(prepareUrlForRouting(context.url))
 
     router.onReady(() => {
-      const matchedComponents = router.getMatchedComponents()
-
-      Promise.all([
-<%_ if (vuex) { _%>
-        // Async data
-        ...matchedComponents.map(Component => {
-          if (Component.asyncData) {
-            return Component.asyncData({
-              store,
-              route: router.currentRoute,
-            })
-          }
-        }),
-<%_ } _%>
-<%_ if (apollo) { _%>
-        // Apollo prefetch
-        ApolloSSR.prefetchAll(apolloProvider, [App, ...matchedComponents], {
-<%_ if (vuex) { _%>
-          store,
-<%_ } _%>
-          route: router.currentRoute,
-        }),
-<%_ } _%>
-      ]).then(() => {
+      context.rendered = () => {
 <%_ if (vuex) { _%>
         // After all preFetch hooks are resolved, our store is now
         // filled with the state needed to render the app.
@@ -63,8 +41,8 @@ export default context => {
         // Same for Apollo client cache
         context.apolloState = ApolloSSR.getStates(apolloProvider)
 <%_ } _%>
-        resolve(app)
-      })
+      }
+      resolve(app)
     }, reject)
   })
 }
