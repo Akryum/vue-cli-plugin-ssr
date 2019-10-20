@@ -22,6 +22,8 @@ module.exports = {
       defaultTitle: 'My app',
       // Path to favicon
       favicon: './public/favicon.ico',
+      // Enable Critical CSS
+      criticalCSS: true,
       // Skip some requests from being server-side rendered
       skipRequests: req => req.originalUrl === '/graphql',
       // See https://ssr.vuejs.org/guide/build-config.html#externals-caveats
