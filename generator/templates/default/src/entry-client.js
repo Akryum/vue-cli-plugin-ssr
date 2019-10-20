@@ -17,6 +17,7 @@ createApp({
 
   afterApp ({
     app,
+    router,
     <%_ if (vuex) { _%>
       store,
     <%_ } _%>
@@ -24,6 +25,8 @@ createApp({
     <%_ if (vuex) { _%>
     store.replaceState(window.__INITIAL_STATE__)
     <%_ } _%>
-    app.$mount('#app')
+    router.onReady(() => {
+      app.$mount('#app')
+    })
   }
 })
