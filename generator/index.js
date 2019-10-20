@@ -7,7 +7,7 @@ const chalk = require('chalk')
 
 module.exports = (api, options, rootOptions) => {
   if (!api.hasPlugin('router')) {
-    throw new Error(`Please install router plugin with 'vue add router'.`)
+    throw new Error('Please install router plugin with \'vue add router\'.')
   }
 
   api.extendPackage({
@@ -43,16 +43,16 @@ module.exports = (api, options, rootOptions) => {
       const file = getFile(api, './src/main.js')
       if (file) {
         let contents = fs.readFileSync(file, { encoding: 'utf8' })
-        contents = contents.replace(/import router from ('|")\.\/router(\.\w+)?('|")/, `import { createRouter } from $1./router$3`)
-        contents = contents.replace(/import store from ('|")\.\/store(\.\w+)?('|")/, `import { createStore } from $1./store$3`)
-        contents = contents.replace(/import ('|")\.\/registerServiceWorker('|")\n/, ``)
-        contents = contents.replace(/const apolloProvider = createProvider\(({(.|\s)*?})?\)\n/, ``)
+        contents = contents.replace(/import router from ('|")\.\/router(\.\w+)?('|")/, 'import { createRouter } from $1./router$3')
+        contents = contents.replace(/import store from ('|")\.\/store(\.\w+)?('|")/, 'import { createStore } from $1./store$3')
+        contents = contents.replace(/import ('|")\.\/registerServiceWorker('|")\n/, '')
+        contents = contents.replace(/const apolloProvider = createProvider\(({(.|\s)*?})?\)\n/, '')
         contents = contents.replace(/new Vue\({((.|\s)*)}\)\.\$mount\(.*?\)/, `export async function createApp ({
           beforeApp = () => {},
           afterApp = () => {}
         } = {}) {
           const router = createRouter()
-          ${templateOptions.vuex ? `const store = createStore()` : ''}
+          ${templateOptions.vuex ? 'const store = createStore()' : ''}
           ${templateOptions.apollo ? `const apolloProvider = createProvider({
             ssr: process.server,
           })` : ''}
@@ -88,7 +88,7 @@ module.exports = (api, options, rootOptions) => {
         let contents = fs.readFileSync(file, { encoding: 'utf8' })
         contents = contents.replace(/export default new Router\({((.|\s)+)}\)/, `export function createRouter () {
           return new Router({
-            ${contents.includes('mode:') ? '' : `mode: 'history',`}$1})
+            ${contents.includes('mode:') ? '' : 'mode: \'history\','}$1})
         }`)
         contents = contents.replace(/mode:\s*("|')(hash|abstract)("|'),/, '')
         fs.writeFileSync(file, contents, { encoding: 'utf8' })
@@ -127,7 +127,7 @@ module.exports = (api, options, rootOptions) => {
         contents = contents.replace(/export default app => {((.|\s)*)}/, `export default app => {$1
           ssrMiddleware(app, { prodOnly: true })
         }`)
-        contents = `import ssrMiddleware from '@akryum/vue-cli-plugin-ssr/lib/app'\n` + contents
+        contents = 'import ssrMiddleware from \'@akryum/vue-cli-plugin-ssr/lib/app\'\n' + contents
         fs.writeFileSync(file, contents, { encoding: 'utf8' })
       }
 

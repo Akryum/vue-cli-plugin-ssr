@@ -88,7 +88,7 @@ module.exports = (api, options) => {
     config.port = port
     config.host = host
 
-    return await createServer({
+    return createServer({
       port,
       host,
     })
