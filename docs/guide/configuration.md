@@ -39,6 +39,8 @@ module.exports = {
       },
       // apply default middleware like compression, serving static files
       applyDefaultServer: true,
+      // Function to extend app context object
+      extendContext: (req, res, process) => ({ appMode: process.env.APP_MODE }),
       // Function to connect custom middlewares
       extendServer: app => {
         const cookieParser = require('cookie-parser')
@@ -53,7 +55,7 @@ module.exports = {
       },
       // Paths
       distPath: path.resolve(__dirname, './dist'),
-      error500Html: null,
+      error500Html: path.resolve(__dirname, './dist/500.html'),
       templatePath: path.resolve(__dirname, './dist/index.html'),
       serviceWorkerPath: path.resolve(__dirname, './dist/service-worker.js'),
     }
