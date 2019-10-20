@@ -12,6 +12,10 @@ module.exports = {
       port: null,
       // Listening host for `serve` command
       host: null,
+      // Specify public file paths to disable resource prefetch hints for
+      shouldNotPrefetch: [],
+      // Specify public file paths to disable resource preload hints for
+      shouldNotPreload: [],
       // Entry for each target
       entry: target => `./src/entry-${target}`,
       // Default title
@@ -22,6 +26,8 @@ module.exports = {
       skipRequests: req => req.originalUrl === '/graphql',
       // See https://ssr.vuejs.org/guide/build-config.html#externals-caveats
       nodeExternalsWhitelist: [/\.css$/, /\?vue&type=style/],
+      // Enable node cluster for the production server
+      clustered: false,
       // Static files Cache-Control maxAge value
       staticCacheTtl: 1000 * 60 * 60 * 24 * 30,
       // Directives fallback
