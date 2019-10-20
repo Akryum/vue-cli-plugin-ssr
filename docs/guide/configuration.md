@@ -28,7 +28,7 @@ module.exports = {
         app.use(cookieParser())
       },
       // Function to call after rendering has been completed
-      rendered: (res, context) => {
+      onRender: (res, context) => {
         res.setHeader(`Cache-Control', 'public, max-age=${context.maxAge}`)
       }
       // Paths
