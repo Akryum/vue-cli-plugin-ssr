@@ -1,4 +1,5 @@
 const fs = require('fs-extra')
+const path = require('path')
 const {
   hasYarn,
 } = require('@vue/cli-shared-utils')
@@ -16,7 +17,7 @@ module.exports = (api, options, rootOptions) => {
       'ssr:start': 'cross-env NODE_ENV=production vue-cli-service ssr:serve --mode production',
     },
     dependencies: {
-      'vue-server-renderer': '^2.5.16',
+      'vue-server-renderer': '^2.6.0',
     },
   })
 
@@ -140,18 +141,38 @@ module.exports = (api, options, rootOptions) => {
     }
 
     // Linting
-    if (api.hasPlugin('eslint')) {
-      // Lint generated/modified files
+    const execa = require('execa')
+
+    if (api.hasPlugin('apollo')) {
+      // Generate JSON schema
       try {
-        const lint = require('@vue/cli-plugin-eslint/lint')
-        const files = ['*.js', '.*.js', 'src']
-        if (api.hasPlugin('apollo')) {
-          files.push('apollo-server')
-        }
-        lint({ silent: true, _: files }, api)
-      } catch (e) {
-        // No ESLint vue-cli plugin
+        execa.sync('vue-cli-service apollo:schema:generate', [
+          '--output',
+          api.resolve('./node_modules/.temp/graphql/schema'),
+        ], {
+          stdio: ['inherit', 'inherit', 'inherit'],
+          cleanup: true,
+          shell: true,
+        })
+      } catch (e) {}
+    }
+
+    // Lint generated/modified files
+    try {
+      const files = ['*.js', '.*.js', 'src']
+      if (api.hasPlugin('apollo')) {
+        files.push('apollo-server')
       }
+      execa.sync('vue-cli-service', [
+        'lint',
+        ...files,
+      ], {
+        stdio: ['inherit', 'inherit', 'inherit'],
+        cleanup: true,
+        shell: true,
+      })
+    } catch (e) {
+      // No ESLint vue-cli plugin
     }
 
     api.exitLog(`Start dev server with ${chalk.cyan(`${hasYarn() ? 'yarn' : 'npm'} run ssr:serve`)}`, 'info')
@@ -165,9 +186,9 @@ function getFile (api, file) {
   if (fs.existsSync(filePath)) return filePath
   filePath = api.resolve(file.replace('.js', '.ts'))
   if (fs.existsSync(filePath)) return filePath
-  filePath = api.resolve(file.replace('.js', ''), 'index.js')
+  filePath = api.resolve(path.join(file.replace('.js', ''), 'index.js'))
   if (fs.existsSync(filePath)) return filePath
-  filePath = api.resolve(file.replace('.js', ''), 'index.ts')
+  filePath = api.resolve(path.join(file.replace('.js', ''), 'index.ts'))
   if (fs.existsSync(filePath)) return filePath
 
   api.exitLog(`File ${file} not found in the project. Automatic generation will be incomplete.`, 'warn')

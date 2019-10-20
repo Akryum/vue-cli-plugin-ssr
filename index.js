@@ -88,7 +88,7 @@ module.exports = (api, options) => {
     config.port = port
     config.host = host
 
-    await createServer({
+    return await createServer({
       port,
       host,
     })
@@ -97,5 +97,5 @@ module.exports = (api, options) => {
 
 module.exports.defaultModes = {
   'ssr:build': 'production',
-  'ssr:server': 'development',
+  'ssr:serve': 'development',
 }
