@@ -152,7 +152,7 @@ module.exports = (api, options, rootOptions) => {
         ], {
           stdio: ['inherit', 'inherit', 'inherit'],
           cleanup: true,
-          shell: true,
+          preferLocal: true,
         })
       } catch (e) {}
     }
@@ -169,7 +169,7 @@ module.exports = (api, options, rootOptions) => {
       ], {
         stdio: ['inherit', 'inherit', 'inherit'],
         cleanup: true,
-        shell: true,
+        preferLocal: true,
       })
     } catch (e) {
       // No ESLint vue-cli plugin
