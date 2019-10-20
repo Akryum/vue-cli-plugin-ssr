@@ -82,32 +82,36 @@ module.exports = (api, options, rootOptions) => {
     }
 
     // Router
-    {
+    try {
       const file = getFile(api, './src/router.js')
       if (file) {
         let contents = fs.readFileSync(file, { encoding: 'utf8' })
-        contents = contents.replace(/export default new Router\({((.|\s)+)}\)/, `export function createRouter () {
-          return new Router({
-            ${contents.includes('mode:') ? '' : 'mode: \'history\','}$1})
-        }`)
+        const { wrapRouterToExportedFunction } = require('./codemod/router')
+        contents = wrapRouterToExportedFunction(contents)
         contents = contents.replace(/mode:\s*("|')(hash|abstract)("|'),/, '')
         fs.writeFileSync(file, contents, { encoding: 'utf8' })
       }
+    } catch (e) {
+      console.error('An error occured while transforming router code', e.stack)
     }
 
     // Vuex
     if (api.hasPlugin('vuex')) {
-      const file = getFile(api, './src/store.js')
-      if (file) {
-        let contents = fs.readFileSync(file, { encoding: 'utf8' })
-        contents = contents.replace(/export default new Vuex\.Store\({((.|\s)+)}\)/, `export function createStore () {
-          return new Vuex.Store({$1})
-        }`)
-        contents = contents.replace(/state:\s*{((.|\s)*?)},\s*(getters|mutations|actions|modules|namespaced):/, `state () {
-          return {$1}
-        },
-        $3:`)
-        fs.writeFileSync(file, contents, { encoding: 'utf8' })
+      try {
+        const file = getFile(api, './src/store.js')
+        if (file) {
+          let contents = fs.readFileSync(file, { encoding: 'utf8' })
+          contents = contents.replace(/export default new Vuex\.Store\({((.|\s)+)}\)/, `export function createStore () {
+            return new Vuex.Store({$1})
+          }`)
+          contents = contents.replace(/state:\s*{((.|\s)*?)},\s*(getters|mutations|actions|modules|namespaced):/, `state () {
+            return {$1}
+          },
+          $3:`)
+          fs.writeFileSync(file, contents, { encoding: 'utf8' })
+        }
+      } catch (e) {
+        console.error('An error occured while transforming vuex code', e.stack)
       }
     }
 
