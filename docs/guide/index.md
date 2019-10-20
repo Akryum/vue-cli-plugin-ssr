@@ -10,7 +10,7 @@ Add the plugin to the project:
 vue add @akryum/ssr
 ```
 
-Start the devlopment server:
+Start the development server:
 
 ```bash
 yarn run ssr:serve

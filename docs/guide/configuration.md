@@ -28,20 +28,34 @@ module.exports = {
       nodeExternalsWhitelist: [/\.css$/, /\?vue&type=style/],
       // Enable node cluster for the production server
       clustered: false,
+      // Static files Cache-Control maxAge value
+      staticCacheTtl: 1000 * 60 * 60 * 24 * 30,
+      // Directives fallback
+      directives: {
+        // See 'Directive' chapter
+      },
+      lruCacheOptions: {
+        // See https://ssr.vuejs.org/guide/caching.html
+      },
+      // apply default middleware like compression, serving static files
+      applyDefaultServer: true,
       // Function to connect custom middlewares
       extendServer: app => {
         const cookieParser = require('cookie-parser')
         app.use(cookieParser())
+      },
+      // Function to call after rendering has been completed
+      onRender: (res, context) => {
+        res.setHeader(`Cache-Control', 'public, max-age=${context.maxAge}`)
+      },
+      onError: error => {
+        // Send to error monitoring service
       },
       // Paths
       distPath: path.resolve(__dirname, './dist'),
       error500Html: null,
       templatePath: path.resolve(__dirname, './dist/index.html'),
       serviceWorkerPath: path.resolve(__dirname, './dist/service-worker.js'),
-      // Directives fallback
-      directives: {
-        // See 'Directive' chapter
-      }
     }
   }
 }
