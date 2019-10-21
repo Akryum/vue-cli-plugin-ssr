@@ -1,6 +1,6 @@
 # Webpack configuration
 
-In the `chainWebpack()` and `configureWebpack()` options `vue.config.js`, you have access to some environment 
+In the `chainWebpack()` and `configureWebpack()` options in `vue.config.js`, you have access to some environment 
 variables:
 
 - **`process.env.VUE_CLI_SSR_TARGET`**: Either `'client'` or `'server'`
