@@ -69,7 +69,7 @@ module.exports = (api, options) => {
 
   api.registerCommand('ssr:serve', {
     description: 'Run the included server.',
-    usage: 'vue-cli-service serve:ssr [options]',
+    usage: 'vue-cli-service ssr:serve [options]',
     options: {
       '-p, --port [port]': 'specify port',
       '-h, --host [host]': 'specify host',
