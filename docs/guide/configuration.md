@@ -8,6 +8,8 @@ const path = require('path')
 module.exports = {
   pluginOptions: {
     ssr: {
+      // Specify a route prefix for the app independent from publicPath
+      publicAppPath: null,
       // Listening port for `serve` command
       port: null,
       // Listening host for `serve` command
