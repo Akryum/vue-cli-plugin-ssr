@@ -13,6 +13,7 @@ module.exports = {
       // Listening host for `serve` command
       host: null,
       // Specify public file paths to disable resource prefetch hints for
+      // set to true to disable all prefetches.
       shouldNotPrefetch: [],
       // Specify public file paths to disable resource preload hints for
       shouldNotPreload: [],
@@ -38,6 +39,28 @@ module.exports = {
       },
       lruCacheOptions: {
         // See https://ssr.vuejs.org/guide/caching.html
+      },
+      // enable the entire rendered html & vuex state to be cached
+      // DO NOT CACHE IF THE USER IS LOGGED IN
+      cachedRenderResponse(context) {
+        if (context.req.headers.cookie.contains('access_token')) {
+          return false
+        }
+        if (context.url === '/') {
+          // only cache the home page
+          return true
+        }
+        // don't cache anything else
+        return false
+      },
+      // set a custom ttl per route
+      cachedRenderResponseTtl(context) {
+        if (context.url === '/') {
+          // cache for 30 minutes
+          return 1000 * 60 * 30
+        }
+        // cache for 15 minutes
+        return 1000 * 60 * 15
       },
       // apply default middleware like compression, serving static files
       applyDefaultServer: true,
