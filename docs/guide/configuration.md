@@ -13,6 +13,7 @@ module.exports = {
       // Listening host for `serve` command
       host: null,
       // Specify public file paths to disable resource prefetch hints for
+      // set to true to disable all prefetches.
       shouldNotPrefetch: [],
       // Specify public file paths to disable resource preload hints for
       shouldNotPreload: [],
