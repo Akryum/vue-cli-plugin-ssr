@@ -52,7 +52,7 @@
     "webpackbar": "^4.0.0"
   },
   "devDependencies": {
-    "eslint": "^6.5.1",
+    "eslint": "^7.1.0",
     "eslint-config-standard": "^14.0.0",
     "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-node": "^10.0.0",
