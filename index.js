@@ -25,7 +25,7 @@ module.exports = (api, options) => {
     rimraf.sync(api.resolve(config.distPath))
 
     const { getWebpackConfigs } = require('./lib/webpack')
-    const [clientConfig, serverConfig] = getWebpackConfigs(service)
+    const [clientConfigLegacy, clientConfigModern, serverConfig] = getWebpackConfigs(service)
 
     const compile = ({ webpackConfigs, watch, service }) => {
       Object.keys(require.cache)
@@ -75,7 +75,12 @@ module.exports = (api, options) => {
       })
     }
 
-    await compile({ webpackConfigs: [clientConfig, serverConfig], watch: args.watch, service })
+    process.env.VUE_CLI_MODERN_MODE = true
+    await compile({ webpackConfigs: [clientConfigLegacy, serverConfig], watch: args.watch, service })
+    process.env.VUE_CLI_MODERN_BUILD = true
+    // Modern build depends on files from legacy build, that's why these
+    // compilations cannot run parallely
+    await compile({ webpackConfigs: [clientConfigModern], watch: args.watch, service })
   })
 
   api.registerCommand('ssr:serve', {
