@@ -21,50 +21,66 @@ module.exports = (api, options) => {
   api.registerCommand('ssr:build', {
     description: 'build for production (SSR)',
   }, async (args) => {
-    const webpack = require('webpack')
     const rimraf = require('rimraf')
-    const formatStats = require('@vue/cli-service/lib/commands/build/formatStats')
-
-    const options = service.projectOptions
-
     rimraf.sync(api.resolve(config.distPath))
 
     const { getWebpackConfigs } = require('./lib/webpack')
-    const [clientConfig, serverConfig] = getWebpackConfigs(service)
+    const [clientConfigLegacy, clientConfigModern, serverConfig] = getWebpackConfigs(service)
 
-    const compiler = webpack([clientConfig, serverConfig])
-    const onCompilationComplete = (err, stats) => {
-      if (err) {
-        // eslint-disable-next-line
-        console.error(err.stack || err)
-        if (err.details) {
-          // eslint-disable-next-line
-          console.error(err.details)
+    const compile = ({ webpackConfigs, watch, service }) => {
+      Object.keys(require.cache)
+        .filter(key => key.includes('@vue/cli-plugin-babel'))
+        .forEach(key => delete require.cache[key])
+
+      const webpack = require('webpack')
+      const formatStats = require('@vue/cli-service/lib/commands/build/formatStats')
+
+      const options = service.projectOptions
+
+      const compiler = webpack(webpackConfigs)
+      return new Promise((resolve) => {
+        const onCompilationComplete = (err, stats) => {
+          if (err) {
+            // eslint-disable-next-line
+            console.error(err.stack || err)
+            if (err.details) {
+              // eslint-disable-next-line
+              console.error(err.details)
+            }
+            return resolve()
+          }
+
+          if (stats.hasErrors()) {
+            stats.toJson().errors.forEach(err => console.error(err))
+            process.exitCode = 1
+          }
+
+          if (stats.hasWarnings()) {
+            stats.toJson().warnings.forEach(warn => console.warn(warn))
+          }
+
+          try {
+            // eslint-disable-next-line
+            console.log(formatStats(stats, options.outputDir, api));
+          } catch (e) {
+          }
+          resolve()
         }
-        return
-      }
 
-      if (stats.hasErrors()) {
-        stats.toJson().errors.forEach(err => console.error(err))
-        process.exitCode = 1
-      }
-
-      if (stats.hasWarnings()) {
-        stats.toJson().warnings.forEach(warn => console.warn(warn))
-      }
-
-      try {
-        // eslint-disable-next-line
-        console.log(formatStats(stats, options.outputDir, api));
-      } catch (e) {
-      }
+        if (watch) {
+          compiler.watch({}, onCompilationComplete)
+        } else {
+          compiler.run(onCompilationComplete)
+        }
+      })
     }
 
-    if (args.watch) {
-      compiler.watch({}, onCompilationComplete)
-    } else {
-      compiler.run(onCompilationComplete)
-    }
+    process.env.VUE_CLI_MODERN_MODE = true
+    await compile({ webpackConfigs: [clientConfigLegacy, serverConfig], watch: args.watch, service })
+    process.env.VUE_CLI_MODERN_BUILD = true
+    // Modern build depends on files from legacy build, that's why these
+    // compilations cannot run parallely
+    await compile({ webpackConfigs: [clientConfigModern], watch: args.watch, service })
   })
 
   api.registerCommand('ssr:serve', {
