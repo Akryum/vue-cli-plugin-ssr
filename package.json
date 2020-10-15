@@ -58,7 +58,7 @@
     "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-promise": "^4.0.0",
     "eslint-plugin-standard": "^4.0.0",
-    "vuepress": "^0.14.8"
+    "vuepress": "^1.7.0"
   },
   "peerDependencies": {
     "@vue/cli-service": ">=3.0.0",
